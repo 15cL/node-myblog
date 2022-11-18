@@ -47,3 +47,15 @@ exports.validatePwd = (req, res, next) => {
   }
   next()
 }
+
+
+// 校验图片url格式
+exports.validateAvatar = (req, res, next) => {
+  let str = typeof (req.body.avatar) === 'string'
+  // let isOk = new Buffer.from(str, 'base64').toString('base64') === str
+  if (!str) {
+    return res.staSend(1, '图片格式错误')
+  }
+
+  next()
+}

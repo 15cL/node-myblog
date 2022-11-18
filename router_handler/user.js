@@ -61,15 +61,15 @@ exports.login = (req, res) => {
 
 
     if (result.length !== 1) {
-      return res.staSend(1, '登陆失败')
+      return res.staSend(1, '登陆失败!')
     }
 
     const compareResult = bcryptjs.compareSync(userInfo.password, result[0].password)
     if (!compareResult) {
-      return res.staSend(1, '登陆失败')
+      return res.staSend(1, '密码错误!')
     }
     let jwtToken = token.jwt(result[0])
     res.staSend(0, '登录成功', { token: jwtToken })
-    
+
   })
 }
