@@ -43,7 +43,7 @@ exports.register = (req, res) => {
         return res.staSend(1, '注册用户失败，请稍后再试')
       }
 
-      res.staSend(0, "注册成功")
+      return res.staSend(0, "注册成功")
     })
   })
 }
@@ -69,7 +69,7 @@ exports.login = (req, res) => {
       return res.staSend(1, '密码错误!')
     }
     let jwtToken = token.jwt(result[0])
-    res.staSend(0, '登录成功', { token: jwtToken })
+    return res.staSend(0, '登录成功', { token: jwtToken })
 
   })
 }

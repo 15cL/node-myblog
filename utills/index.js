@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-exports.httpSend = (res, err, result, tip) => {
+exports.errSend = (res, err, result, tip) => {
   if (err) {
     return res.staSend(1, err.message)
   }

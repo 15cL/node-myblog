@@ -1,7 +1,7 @@
 
 const express = require("express")
 
-const router = express()
+const router = express.Router()
 
 const { getUserInfo, updateUserInfo, updatePwd, updateAvatar } = require('../router_handler/userinfo')
 

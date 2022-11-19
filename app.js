@@ -7,15 +7,39 @@ const app = express()
 // const cors = require('cors')
 // app.use(cors)
 
+
+
 // 解析表单数据的中间件，
 app.use(express.urlencoded({ extended: false }))
 
 // 注册send中间间
 app.use((req, res, next) => {
+  // 输出 JSON 格式
+  // res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });//设置response编码为utf-8
+
   res.staSend = (status, message, obj) => {
 
-    res.send({ status, message, ...obj })
+    // 判断obj是否为多级数组
+    const getlevel = obj => {
+      return Array.isArray(obj) ? Math.max(...obj.map(getlevel)) + 1 : 0
+    }
+    console.log(getlevel(obj));
+
+    if (getlevel(obj) >= 1) {
+
+      return res.send({ status, message, data: obj })
+    } else {
+      return res.send({ status, message, ...obj })
+    }
   }
+  next()
+})
+
+// 统一设置响应头
+app.all('*', (req, res, next) => {
+  // 输出 JSON 格式
+  res.setHeader("Content-Type", "application/json;charset=utf-8");//设置response编码为utf-8
+
   next()
 })
 
@@ -34,6 +58,9 @@ app.use('/user', userRouter)
 const myRouter = require('./router/userinfo')
 app.use('/my', myRouter)
 
+
+const tagRouter = require('./router/tags')
+app.use('/tag', tagRouter)
 
 
 // 定义错误级别的中间件
