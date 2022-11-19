@@ -10,3 +10,5 @@
       修改用户信息      Url：/my/update/userinfo     Method：Post  Body：{  nickname, email }      需登录 
       
        修改密码        Url：/my/update/pwd           Method：Post  Body:{ oldPwd , newPwd }        需登录 
+       
+       修改头像          Url：/my/update/avatar       Method：Post  Body :{ avatar }  base64格式    需登录             
