@@ -12,3 +12,15 @@
        修改密码        Url：/my/update/pwd           Method：Post  Body:{ oldPwd , newPwd }        需登录 
        
        修改头像          Url：/my/update/avatar       Method：Post  Body :{ avatar }  base64格式    需登录             
+
+
+# 2022/11/19
+       获取所有标签        Url: /tag/all              Method：Get
+
+        更新标签           Url: /tag/update          Method：Post    Body :{ id }                  需登录
+
+        新增标签           Url: /tag/new             Method: Post    Body :{ id ,tagName }         需登录
+
+        删除标签           Url: /tag/del             Method: Post    Body : { id }                 需登录
+
+        
