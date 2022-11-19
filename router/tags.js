@@ -6,6 +6,8 @@ const router = express.Router()
 
 const { getTags, addTags, delTags, updateTags } = require('../router_handler/tags')
 
+const { validateTagName } = require('../schema/tag')
+
 // 获取所有标签
 router.get('/all', getTags)
 
@@ -15,7 +17,8 @@ router.post('/new', addTags)
 // 删除标签
 router.post('/del', delTags)
 
-router.post('/update', updateTags)
+// 更新标签
+router.post('/update',validateTagName, updateTags)
 
 
 module.exports = router

@@ -29,3 +29,15 @@ exports.buffer = (res, avatar) => {
     return saveUrl.slice(7)
   })
 }
+
+// 删除对象中值为null的key
+exports.removeProNull = (obj) => {
+  for (const key in obj) {
+    if (Object.hasOwnProperty.call(obj, key)) {
+      if (!obj[key]) {
+        delete obj[key]
+      }
+    }
+  }
+  return obj
+}

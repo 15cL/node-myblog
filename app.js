@@ -23,7 +23,6 @@ app.use((req, res, next) => {
     const getlevel = obj => {
       return Array.isArray(obj) ? Math.max(...obj.map(getlevel)) + 1 : 0
     }
-    console.log(getlevel(obj));
 
     if (getlevel(obj) >= 1) {
 
@@ -53,14 +52,18 @@ app.use(JWTtoken.parseJWT())
 const userRouter = require('./router/user')
 app.use('/user', userRouter)
 
-
-// 导入获取用户信息模块
+// 导入并注册用户信息模块
 const myRouter = require('./router/userinfo')
 app.use('/my', myRouter)
 
-
+// 导入并注册标签云模块
 const tagRouter = require('./router/tags')
 app.use('/tag', tagRouter)
+
+// 导入并注册文章模块
+const articleRouter = require('./router/article')
+app.use('/article', articleRouter)
+
 
 
 // 定义错误级别的中间件
