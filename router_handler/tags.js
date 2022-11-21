@@ -60,11 +60,11 @@ exports.updateTags = (req, res) => {
       return res.staSend(1, '当前标签已存在')
     }
 
-    errSend(res, err, [0], '新增标签失败')
+    errSend(res, err, [0], '更新标签失败')
     // 更新
     let sql = `update tags set name=? where id=?`
     db.query(sql, [req.body.tagName, req.body.id], (err, result) => {
-      httpSend(res, err, result, '更新标签失败')
+      errSend(res, err, result, '更新标签失败')
       return res.staSend(0, '更新标签成功')
 
     })

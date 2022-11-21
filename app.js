@@ -3,14 +3,16 @@
 const express = require('express')
 const app = express()
 
-// // 跨域
-// const cors = require('cors')
-// app.use(cors)
+// 跨域
+const cors = require('cors')
 
-
+// # 解析json编码数据
+app.use(express.json());
 
 // 解析表单数据的中间件，
 app.use(express.urlencoded({ extended: false }))
+
+app.use(cors())
 
 // 注册send中间间
 app.use((req, res, next) => {
@@ -68,7 +70,7 @@ app.use('/article', articleRouter)
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
-
+  console.log(err);
   if (err.name === 'UnauthorizedError') {
 
     return res.staSend(401, '身份认证失败！')
@@ -77,6 +79,6 @@ app.use((err, req, res, next) => {
   res.staSend(1, err.message)
 })
 
-app.listen(80, () => {
-  console.log("服务器已启动 http://127.0.0.1");
+app.listen(3000, () => {
+  console.log("服务器已启动 http://127.0.0.1:3000");
 })

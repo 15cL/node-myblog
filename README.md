@@ -19,7 +19,7 @@
 
         更新标签           Url: /tag/update          Method：Post    Body :{ id }                  需登录
 
-        新增标签           Url: /tag/new             Method: Post    Body :{ id ,tagName }         需登录
+        新增标签           Url: /tag/new             Method: Post    Body :{ tagName }         需登录
 
         删除标签           Url: /tag/del             Method: Post    Body : { id }                 需登录
 
@@ -28,6 +28,6 @@
 
         更新文章           Url: /article/update          Method：Post    Body :{ id，一或多 }                  需登录
 
-        新增文章           Url: /article/new             Method: Post    Body :{ 必需(id,name,author,detail) , unquote,article_avatar }         需登录
+        新增文章           Url: /article/new             Method: Post    Body :{ 必需(name,author,detail) , unquote,article_avatar }         需登录
 
         删除文章           Url: /article/del             Method: Post    Body : { id }                 需登录

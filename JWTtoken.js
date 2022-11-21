@@ -3,7 +3,7 @@
 const jwtSecretKey = '小五今天想睡觉'
 
 // 设置token有效期
-const expiresIn = '10h'
+const expiresIn = '1h'
 
 // 导入生成token模块
 const jwt = require('jsonwebtoken')
