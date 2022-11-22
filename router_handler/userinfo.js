@@ -1,5 +1,5 @@
 
-
+const fs = require('fs')
 const db = require('../db/index')
 const bcryptjs = require("bcryptjs")
 const { errSend, buffer } = require('../utills/index')
@@ -37,7 +37,6 @@ exports.updatePwd = (req, res) => {
 
     errSend(res, err, result, "用户名不存在！")
 
-
     const compareResult = bcryptjs.compareSync(req.body.oldPwd, result[0].password)
     if (!compareResult) {
       return res.staSend(1, '旧密码错误')
@@ -61,7 +60,14 @@ exports.updatePwd = (req, res) => {
 
 // 修改头像
 exports.updateAvatar = (req, res) => {
-  let avatar = buffer(res, req.body.avatar)
+  let sqll = `select user_pic from users where id=?`
+  db.query(sqll, req.user.id, (err, result) => {
+    errSend(res, err, result, '修改头像失败')
+    
+    // 删除上一张保存的图片
+    fs.unlinkSync('D:\\前端\\'+result[0].user_pic)
+  })
+  let avatar = buffer(res, req.body.avatar,'user_pic')
   let sql = `update users set user_pic= ? where id=?`
   db.query(sql, [avatar, req.user.id], (err, result) => {
     errSend(res, err, result, "修改头像失败")

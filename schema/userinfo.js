@@ -23,10 +23,12 @@ exports.validateNickname = (req, res, next) => {
 // 校验邮箱
 exports.validateEmail = (req, res, next) => {
   let email = req.body.email
-  let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|cn|net)$/
-  let isOk = reg.test(email)
-  if (!isOk) {
-    return res.staSend(1, '邮箱不合法')
+  if (email) {
+    let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+    let isOk = email.match(reg)
+    if (!isOk) {
+      return res.staSend(1, '邮箱不合法')
+    }
   }
   next()
 }

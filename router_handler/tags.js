@@ -6,7 +6,7 @@ const { errSend } = require('../utills/index')
 // 获取所有标签
 exports.getTags = (req, res) => {
 
-  let sql = `select * from tags`
+  let sql = `select * from tags order by id desc`
   db.query(sql, (err, result) => {
     errSend(res, err, [1], '获取标签失败！')
     return res.staSend(0, '获取标签成功', result)

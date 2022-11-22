@@ -2,10 +2,27 @@
 const db = require('../db/index')
 
 const { errSend, removeProNull } = require('../utills/index')
+const { buffer } = require('../utills/index')
+
+function updatePic(req, res, id) {
+  if (id) {
+    let sqll = `select article_avatar from articles where id=?`
+    db.query(sqll, id, (err, result) => {
+      errSend(res, err, result, '修改头像失败')
+
+      // 删除上一张保存的图片
+      fs.unlinkSync('D:\\前端\\' + result[0].article_avatar)
+    })
+  }
+  return buffer(res, req.body.article_avatar, 'article_pic')
+}
 
 // 添加文章
 exports.addArticle = (req, res) => {
   let { name, author, unquote, article_avatar, detail, tag_id } = req.body
+
+  // base64转服务器图片路径，存储到数据库
+  article_avatar = updatePic(req, res, 0)
 
   let sql = `insert into articles set ?`
 
@@ -31,6 +48,8 @@ exports.updateArticle = (req, res) => {
 
   let { name, author, unquote, article_avatar, detail, id, tag_id } = req.body
 
+  // base64转服务器图片路径，存储到数据库
+  article_avatar = updatePic(req, res, id)
 
   let obj = { name, author, unquote, article_avatar, detail, tag_id }
 
@@ -60,9 +79,11 @@ exports.delArticle = (req, res) => {
 
 }
 
+// 根据”id字段“排序，倒叙输出tablename表中的数据。
+// 备注：asc是表示升序，desc表示降序
 // 获取所有文章
 exports.getArticle = (req, res) => {
-  let sql = `select * from articles`
+  let sql = `select * from articles order by id desc`
   db.query(sql, (err, result) => {
 
     errSend(res, err, [0], '获取文章失败')

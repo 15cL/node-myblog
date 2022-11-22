@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(cors())
 
+
 // 注册send中间间
 app.use((req, res, next) => {
   // 输出 JSON 格式
@@ -70,7 +71,6 @@ app.use('/article', articleRouter)
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
-  console.log(err);
   if (err.name === 'UnauthorizedError') {
 
     return res.staSend(401, '身份认证失败！')

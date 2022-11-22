@@ -17,6 +17,6 @@ router.post('/update/userinfo', [validateEmail, validateNickname], updateUserInf
 router.post('/update/pwd', validatePwd, updatePwd)
 
 // 更换头像
-router.post('/update/avatar', validateAvatar, updateAvatar)
+router.post('/update/avatar', updateAvatar)
 
 module.exports = router
