@@ -67,6 +67,9 @@ app.use('/tag', tagRouter)
 const articleRouter = require('./router/article')
 app.use('/article', articleRouter)
 
+// 导入并注册分类模块
+const catesRouter =require('./router/cate')
+app.use('/cate',catesRouter)
 
 
 // 定义错误级别的中间件

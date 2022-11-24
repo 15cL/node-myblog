@@ -36,3 +36,12 @@
       
       在后台开发的过程，发现从数据库读出来的图片服务器路径，在浏览器无法解析本地图片的问题，但还未解决，在后期开发过程，再来解决。
 
+
+# 2022/11/24 v2 分类模块
+       获取所有分类        Url: /cate/all              Method：Get
+
+        更新分类           Url: /cate/update          Method：Post    Body :{ id }                  需登录
+
+        新增分类           Url: /cate/new             Method: Post    Body :{ cateName }         需登录
+
+        删除分类           Url: /cate/del             Method: Post    Body : { id }                 需登录
