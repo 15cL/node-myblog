@@ -3,6 +3,7 @@ const db = require('../db/index')
 
 const { errSend, removeProNull } = require('../utills/index')
 const { buffer } = require('../utills/index')
+const fs = require('fs')
 
 function updatePic(req, res, id) {
   if (id) {
