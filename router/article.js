@@ -4,7 +4,7 @@ const express = require('express')
 
 const router = express.Router()
 
-const { addArticle, updateArticle, delArticle, getArticle } = require('../router_handler/article')
+const { addArticle, updateArticle, delArticle, getArticle,getHotArticle } = require('../router_handler/article')
 
 const { validateReq } = require('../schema/article')
 // 新增文章
@@ -18,5 +18,8 @@ router.post('/del', delArticle)
 
 // 获取所有文章
 router.get('/all', getArticle)
+
+// 获取热门文章
+router.get('/hot',getHotArticle)
 
 module.exports = router

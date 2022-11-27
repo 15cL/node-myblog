@@ -5,14 +5,15 @@ const {
   delCates,
   getCates,
 } = require("../router_handler/cate");
+const { validateCateName } = require("../schema/cate");
 
 const router = express.Router();
 
 router.get("/all", getCates);
 
-router.post("/new", addCates);
+router.post("/new",validateCateName, addCates);
 
-router.post("/update", updateCates);
+router.post("/update",validateCateName, updateCates);
 
 router.post("/del", delCates);
 

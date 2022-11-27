@@ -6,11 +6,12 @@ const app = express()
 // 跨域
 const cors = require('cors')
 
-// # 解析json编码数据
-app.use(express.json());
 
 // 解析表单数据的中间件，
 app.use(express.urlencoded({ extended: false }))
+
+// # 解析json编码数据
+app.use(express.json());
 
 app.use(cors())
 

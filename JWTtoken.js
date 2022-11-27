@@ -24,7 +24,7 @@ exports.jwt = (res) => {
 const expressjwt = require('express-jwt');
 
 // 需要解析token的路径
-const path = ['/user/register', '/user/login']
+const path = ['/user/register', '/user/login','/cate/all','/tag/all','/tag/article','/article/all','/article/hot']
 
 exports.parseJWT = () => {
   return expressjwt({ secret: jwtSecretKey, algorithms: ['HS256'] }).unless({ path })
