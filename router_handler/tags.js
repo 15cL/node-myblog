@@ -68,13 +68,17 @@ exports.updateTags = (req, res) => {
 
 // 获取标签文章
 exports.getArticle = (req, res) => {
-  console.log(req);
   let sql = `select * from  articles where tag_id like ? or tag_id like ? or tag_id like ? or tag_id like ?`;
   db.query(
     sql,
-    [`[${req.body.id}]`,`%,${req.body.id}]`,`[${req.body.id},%`,`%,${req.body.id},%`],
+    [
+      `[${req.body.id}]`,
+      `%,${req.body.id}]`,
+      `[${req.body.id},%`,
+      `%,${req.body.id},%`,
+    ],
     (err, result) => {
-      errSend(res, err, [1], "获取标签失败！");
+      errSend(res, err, [1], "获取标签文章失败！");
       return res.staSend(0, "获取标签文章成功", result);
     }
   );

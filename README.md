@@ -40,8 +40,18 @@
 # 2022/11/24 v2 分类模块
        获取所有分类        Url: /cate/all              Method：Get
 
-        更新分类           Url: /cate/update          Method：Post    Body :{ id }                  需登录
+        更新分类           Url: /cate/update          Method：Post    Body : { id }                  需登录
 
-        新增分类           Url: /cate/new             Method: Post    Body :{ cateName }         需登录
+        新增分类           Url: /cate/new             Method: Post    Body : { cateName }         需登录
 
         删除分类           Url: /cate/del             Method: Post    Body : { id }                 需登录
+
+# 2022/11/28 v2 新增查询
+ 获取当前分类下的所有文章   url: '/cate/article'        Method: Get    Params: { id } 
+
+ 获取当前标签下的所有文章   url: '/tag/article'        Method: Get    Params ：{ id } 
+
+ 获取热门文章              url: 'article/hot'          Method: Get    
+
+
+# 修复get请求传参获取问题

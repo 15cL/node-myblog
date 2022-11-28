@@ -19,14 +19,15 @@ function updatePic(req, res, id) {
 
 // 添加文章
 exports.addArticle = (req, res) => {
-  let { name, author, unquote, article_avatar, detail, tag_id } = req.body;
+  let { name, author, unquote, article_avatar, detail, tag_id, cate_id } =
+    req.body;
 
   // base64转服务器图片路径，存储到数据库
   article_avatar = updatePic(req, res, 0);
 
   let sql = `insert into articles set ?`;
 
-  let obj = { name, author, unquote, article_avatar, detail, tag_id };
+  let obj = { name, author, unquote, article_avatar, detail, tag_id, cate_id };
 
   //剔除null的键值对
   let noNullObj = removeProNull(obj);

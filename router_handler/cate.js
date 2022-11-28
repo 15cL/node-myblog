@@ -65,3 +65,22 @@ exports.updateCates = (req, res) => {
     });
   });
 };
+
+//查找分类文章
+exports.getCateArticle = (req, res) => {
+  console.log(req);
+  let sql = `select * from articles where cate_id like ? or cate_id like ? or cate_id like ? or cate_id like ?`;
+  db.query(
+    sql,
+    [
+      `[${req.body.id}]`,
+      `%,${req.body.id}]`,
+      `[${req.body.id},%`,
+      `%,${req.body.id},%`,
+    ],
+    (err, result) => {
+      errSend(res, err, [1], "获取分类文章失败");
+      return res.staSend(0, "获取分类文章成功", result);
+    }
+  );
+};
