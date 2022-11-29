@@ -28,7 +28,7 @@
 
         更新文章           Url: /article/update          Method：Post    Body :{ id，一或多 }                  需登录
 
-        新增文章           Url: /article/new             Method: Post    Body :{ 必需(name,author,detail) , unquote,article_avatar }         需登录
+        新增文章           Url: /article/new             Method: Post    Body :{ 必需(name,author,detail) ,article_avatar }         需登录
 
         删除文章           Url: /article/del             Method: Post    Body : { id }                 需登录
 
@@ -54,4 +54,7 @@
  获取热门文章              url: 'article/hot'          Method: Get    
 
 
-# 修复get请求传参获取问题
+# 修复get请求传参获取问题 新增了一个中间件
+
+# 2022/11/29 v2 新增搜索api
+     搜索                 url:' /article/search '   Method: Get   Params: { info }

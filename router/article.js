@@ -1,25 +1,33 @@
+const express = require("express");
 
+const router = express.Router();
 
-const express = require('express')
+const {
+  addArticle,
+  updateArticle,
+  delArticle,
+  getArticle,
+  getHotArticle,
+  getAboutArticle,
+} = require("../router_handler/article");
 
-const router = express.Router()
-
-const { addArticle, updateArticle, delArticle, getArticle,getHotArticle } = require('../router_handler/article')
-
-const { validateReq } = require('../schema/article')
+const { validateReq } = require("../schema/article");
 // 新增文章
-router.post('/new', validateReq, addArticle)
+router.post("/new", validateReq, addArticle);
 
 // 更新文章
-router.post('/update', updateArticle)
+router.post("/update", updateArticle);
 
 // 删除文章
-router.post('/del', delArticle)
+router.post("/del", delArticle);
 
 // 获取所有文章
-router.get('/all', getArticle)
+router.get("/all", getArticle);
 
 // 获取热门文章
-router.get('/hot',getHotArticle)
+router.get("/hot", getHotArticle);
 
-module.exports = router
+// 搜索
+router.get("/search", getAboutArticle);
+
+module.exports = router;

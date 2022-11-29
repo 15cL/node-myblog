@@ -19,15 +19,14 @@ function updatePic(req, res, id) {
 
 // 添加文章
 exports.addArticle = (req, res) => {
-  let { name, author, unquote, article_avatar, detail, tag_id, cate_id } =
-    req.body;
+  let { name, author, article_avatar, detail, tag_id, cate_id } = req.body;
 
   // base64转服务器图片路径，存储到数据库
   article_avatar = updatePic(req, res, 0);
 
   let sql = `insert into articles set ?`;
 
-  let obj = { name, author, unquote, article_avatar, detail, tag_id, cate_id };
+  let obj = { name, author, article_avatar, detail, tag_id, cate_id };
 
   //剔除null的键值对
   let noNullObj = removeProNull(obj);
@@ -44,13 +43,12 @@ exports.addArticle = (req, res) => {
 
 // 更新文章
 exports.updateArticle = (req, res) => {
-  let { name, author, unquote, article_avatar, detail, id, tag_id, cate_id } =
-    req.body;
+  let { name, author, article_avatar, detail, id, tag_id, cate_id } = req.body;
 
   // base64转服务器图片路径，存储到数据库
   article_avatar = updatePic(req, res, id);
 
-  let obj = { name, author, unquote, article_avatar, detail, tag_id, cate_id };
+  let obj = { name, author, article_avatar, detail, tag_id, cate_id };
 
   //剔除null的键值对
   let noNullObj = removeProNull(obj);
@@ -92,5 +90,17 @@ exports.getHotArticle = (req, res) => {
   db.query(sql, (err, result) => {
     errSend(res, err, [0], "获取热门文章失败");
     return res.staSend(0, "获取热门文章成功", result);
+  });
+};
+
+
+//搜索
+exports.getAboutArticle = (req, res) => {
+  let info = req.body.info;
+  let sql = `select * from articles where concat(name,author,createdate,detail) like ?`;
+  db.query(sql, `%${info}%`, (err, result) => {
+    errSend(res, err, [1], "搜索失败");
+    console.log(result);
+    return res.staSend(0, "搜索成功", result);
   });
 };
