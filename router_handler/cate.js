@@ -68,7 +68,6 @@ exports.updateCates = (req, res) => {
 
 //查找分类文章
 exports.getCateArticle = (req, res) => {
-  console.log(req);
   let sql = `select * from articles where cate_id like ? or cate_id like ? or cate_id like ? or cate_id like ?`;
   db.query(
     sql,

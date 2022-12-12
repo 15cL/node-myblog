@@ -99,7 +99,6 @@ exports.getAboutArticle = (req, res) => {
   let sql = `select * from articles where concat(name,author,createdate,detail) like ?`;
   db.query(sql, `%${info}%`, (err, result) => {
     errSend(res, err, [1], "搜索失败");
-    console.log(result);
     return res.staSend(0, "搜索成功", result);
   });
 };
