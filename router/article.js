@@ -9,6 +9,7 @@ const {
   getArticle,
   getHotArticle,
   getAboutArticle,
+  getArticleMsg
 } = require("../router_handler/article");
 
 const { validateReq } = require("../schema/article");
@@ -29,5 +30,7 @@ router.get("/hot", getHotArticle);
 
 // 搜索
 router.get("/search", getAboutArticle);
+
+router.get('/msg',getArticleMsg)
 
 module.exports = router;

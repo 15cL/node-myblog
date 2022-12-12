@@ -17,7 +17,6 @@ app.use(cors()); //跨域
 const url = require("url");
 // 注册send中间间
 app.use((req, res, next) => {
-  
   // 处理get请求参数
   if (req.method == "GET") {
     const qu = url.parse(req.url, true);
@@ -72,6 +71,10 @@ app.use("/article", articleRouter);
 // 导入并注册分类模块
 const catesRouter = require("./router/cate");
 app.use("/cate", catesRouter);
+
+//导入并注册留言模块
+const msgRouter = require("./router/msg");
+app.use("/msg", msgRouter);
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {

@@ -93,7 +93,6 @@ exports.getHotArticle = (req, res) => {
   });
 };
 
-
 //搜索
 exports.getAboutArticle = (req, res) => {
   let info = req.body.info;
@@ -102,5 +101,15 @@ exports.getAboutArticle = (req, res) => {
     errSend(res, err, [1], "搜索失败");
     console.log(result);
     return res.staSend(0, "搜索成功", result);
+  });
+};
+
+//获取文章下留言
+exports.getArticleMsg = (req, res) => {
+  let article_id = req.body.id;
+  let sql = `select * from msgs where article_id = ?`;
+  db.query(sql, article_id, (err, result) => {
+    errSend(res, err, [1], "获取文章留言失败");
+    return res.staSend(0, "获取文章留言成功", result);
   });
 };

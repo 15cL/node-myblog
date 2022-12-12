@@ -30,7 +30,10 @@ const path = [
   "/tag/article",
   "/article/all",
   "/article/hot",
-  "/article/search"
+  "/article/search",
+  '/msg/all',
+  '/msg/add',
+  '/msg/del'
 ];
 
 exports.parseJWT = () => {
