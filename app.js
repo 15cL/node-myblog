@@ -6,16 +6,19 @@ const app = express();
 const cors = require("cors");
 
 // 解析表单数据的中间件，
-app.use(express.urlencoded({ extended: false }));
+// 将上传文件大小限制为50mb
+app.use(express.json({limit:'50mb'}))
+app.use(express.urlencoded({limit: '50mb', extended: true }));
 
 // # 解析json编码数据
 app.use(express.json());
+
 
 app.use(cors()); //跨域
 
 // 处理get请求参数
 const url = require("url");
-// 注册send中间间
+// 注册send中间件
 app.use((req, res, next) => {
   // 处理get请求参数
   if (req.method == "GET") {
@@ -82,7 +85,7 @@ app.use((err, req, res, next) => {
     return res.staSend(401, "身份认证失败！");
   }
 
-  res.staSend(1, err.message);
+  res.send({status:'1',message:err.message})
 });
 
 app.listen(3000, () => {

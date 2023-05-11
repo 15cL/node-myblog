@@ -105,10 +105,27 @@ exports.getAboutArticle = (req, res) => {
 
 //获取文章下留言
 exports.getArticleMsg = (req, res) => {
-  let article_id = req.body.id;
-  let sql = `select * from msgs where article_id = ?`;
-  db.query(sql, article_id, (err, result) => {
-    errSend(res, err, [1], "获取文章留言失败");
-    return res.staSend(0, "获取文章留言成功", result);
+  let sql = `select * from msgs where article_id = ? order by createtime desc`;
+  db.query(sql, req.body.id, (err, result) => {
+    let num = result.length;
+    let sql0 = `update articles set msg_num = ? where id = ${req.body.id}`;
+    db.query(sql0, num, (err, result0) => {
+      errSend(res, err, [1], "获取文章留言失败");
+      return res.staSend(0, "获取文章留言成功", result);
+    });
+  });
+};
+
+//计算文章流量
+exports.inserTraffic = (req, res) => {
+  let sql = `select traffic from articles where id = ?`;
+  db.query(sql, req.body.id, (err, result) => {
+    let traffic = result[0].traffic + 1;
+    console.log(traffic);
+    let sql0 = `update articles set traffic=? where id =?`;
+    db.query(sql0, [traffic, req.body.id], (res0, result0) => {
+      errSend(res, err, [1], "计算文章流量失败");
+      return res.staSend(0, "计算文章留言成功", result0);
+    });
   });
 };

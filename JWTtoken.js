@@ -20,7 +20,7 @@ exports.jwt = (res) => {
 // 导入解析token模块
 const expressjwt = require("express-jwt");
 
-// 需要解析token的路径
+// 不需要解析token的路径
 const path = [
   "/user/register",
   "/user/login",
@@ -31,9 +31,11 @@ const path = [
   "/article/all",
   "/article/hot",
   "/article/search",
-  '/msg/all',
-  '/msg/add',
-  '/msg/del'
+  "/article/msg",
+  '/article/traffic',
+  "/msg/all",
+  "/msg/add",
+  "/msg/del",
 ];
 
 exports.parseJWT = () => {

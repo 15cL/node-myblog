@@ -12,9 +12,10 @@ exports.getAllMsg = (req, res) => {
 
 // 添加留言
 exports.addMsg = (req, res) => {
-  let { name, avatar_url, detail, article_id } = req.body;
+  let { nickName, avatar_url, detail, article_id } = req.body;
   let createtime = new Date();
-  let obj = { name, avatar_url, detail, createtime, article_id };
+  let obj = { avatar_url, detail, createtime, article_id };
+  obj.name = nickName;
   let sql = `insert into msgs set ?`;
   db.query(sql, obj, (err, result) => {
     errSend(res, err, result, "添加留言失败");

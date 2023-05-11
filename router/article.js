@@ -9,7 +9,8 @@ const {
   getArticle,
   getHotArticle,
   getAboutArticle,
-  getArticleMsg
+  getArticleMsg,
+  inserTraffic
 } = require("../router_handler/article");
 
 const { validateReq } = require("../schema/article");
@@ -31,6 +32,11 @@ router.get("/hot", getHotArticle);
 // 搜索
 router.get("/search", getAboutArticle);
 
+// 获取文章下的留言
 router.get('/msg',getArticleMsg)
+
+// 修改文章浏览量
+router.post('/traffic',inserTraffic)
+
 
 module.exports = router;
