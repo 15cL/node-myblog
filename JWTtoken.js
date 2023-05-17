@@ -36,6 +36,7 @@ const path = [
   "/msg/all",
   "/msg/add",
   "/msg/del",
+  "/article/getAvatar"
 ];
 
 exports.parseJWT = () => {

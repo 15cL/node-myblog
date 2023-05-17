@@ -1,6 +1,5 @@
 const fs = require("fs");
 
-const multer = require("multer");
 
 const db = require("../db/index");
 const bcryptjs = require("bcryptjs");
@@ -71,7 +70,6 @@ exports.updateAvatar = (req, res) => {
 };
 
 exports.getAvatar = (req, res) => {
-  console.log(req.body.user_pic);
   const data = fs.readFile(req.body.user_pic, "binary", function (err, data) {
     if (err) {
       res.send("获取头像失败");

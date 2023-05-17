@@ -4,25 +4,16 @@ const { errSend, removeProNull } = require("../utills/index");
 const { buffer } = require("../utills/index");
 const fs = require("fs");
 
-function updatePic(req, res, id) {
-  if (id) {
-    let sqll = `select article_avatar from articles where id=?`;
-    db.query(sqll, id, (err, result) => {
-      errSend(res, err, result, "修改头像失败");
-
-      // 删除上一张保存的图片
-      fs.unlinkSync("D:\\前端\\" + result[0].article_avatar);
-    });
-  }
-  return buffer(res, req.body.article_avatar, "article_pic");
-}
-
 // 添加文章
 exports.addArticle = (req, res) => {
   let { name, author, article_avatar, detail, tag_id, cate_id } = req.body;
 
   // base64转服务器图片路径，存储到数据库
-  article_avatar = updatePic(req, res, 0);
+  // article_avatar = updatePic(req, res, 0);
+  article_avatar = JSON.parse(article_avatar);
+  if (article_avatar) {
+    article_avatar = buffer(req, res, article_avatar, "article_pic", "add");
+  }
 
   let sql = `insert into articles set ?`;
 
@@ -45,11 +36,14 @@ exports.addArticle = (req, res) => {
 exports.updateArticle = (req, res) => {
   let { name, author, article_avatar, detail, id, tag_id, cate_id } = req.body;
 
-  // base64转服务器图片路径，存储到数据库
-  article_avatar = updatePic(req, res, id);
+  let obj = { name, author, detail, tag_id, cate_id };
+  if (!article_avatar.includes("./public")) {
+    article_avatar = JSON.parse(article_avatar);
 
-  let obj = { name, author, article_avatar, detail, tag_id, cate_id };
-
+    // base64转服务器图片路径，存储到数据库
+    article_avatar = buffer(req, res, article_avatar, "article_pic");
+    obj["article_avatar"] = article_avatar;
+  }
   //剔除null的键值对
   let noNullObj = removeProNull(obj);
 
@@ -64,6 +58,12 @@ exports.updateArticle = (req, res) => {
 
 // 删除文章
 exports.delArticle = (req, res) => {
+  let sql0 = `select article_avatar from articles where id=?`;
+  db.query(sql0, req.body.id, (err, result0) => {
+    errSend(res, err, result0, "删除图片失败");
+    fs.unlinkSync(result0[0].article_avatar);
+  });
+
   let sql = `delete from articles where id=?`;
 
   db.query(sql, req.body.id, (err, result) => {
@@ -121,11 +121,31 @@ exports.inserTraffic = (req, res) => {
   let sql = `select traffic from articles where id = ?`;
   db.query(sql, req.body.id, (err, result) => {
     let traffic = result[0].traffic + 1;
-    console.log(traffic);
     let sql0 = `update articles set traffic=? where id =?`;
     db.query(sql0, [traffic, req.body.id], (res0, result0) => {
       errSend(res, err, [1], "计算文章流量失败");
       return res.staSend(0, "计算文章留言成功", result0);
     });
+  });
+};
+
+// 获取文章大图
+exports.getAvatar = (req, res) => {
+  let sql = `select article_avatar from articles where id= ?`;
+  db.query(sql, req.body.id, (err, result) => {
+    errSend(res, err, [1], "获取文章大图失败");
+    const data = fs.readFile(
+      result[0].article_avatar,
+      "binary",
+      function (err, data) {
+        if (err) {
+          res.send("文章大图失败");
+        } else {
+          return res.staSend(0, "获取文章大图成功", {
+            baseUrl: Buffer.from(data, "binary").toString("base64"),
+          });
+        }
+      }
+    );
   });
 };
