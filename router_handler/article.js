@@ -63,7 +63,10 @@ exports.delArticle = (req, res) => {
     errSend(res, err, result0, "删除图片失败");
     fs.unlinkSync(result0[0].article_avatar);
   });
-
+  let sql1 = `delete from msgs where article_id=?`;
+  db.query(sql1, req.body.id, (err, result1) => {
+    errSend(res, err, result1, "删除文章留言失败");
+  });
   let sql = `delete from articles where id=?`;
 
   db.query(sql, req.body.id, (err, result) => {
