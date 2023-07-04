@@ -1,4 +1,5 @@
 const fs = require("fs");
+const db = require("../db/index");
 
 exports.errSend = (res, err, result, tip) => {
   if (err) {
@@ -13,7 +14,7 @@ exports.errSend = (res, err, result, tip) => {
 };
 
 // 将图片上传服务端，转化为图片路径，将图片路径上传到数据库
-exports.buffer = (req, res, avatar, pathMy, way = "no") => {
+exports.buffer = (req, res, avatar, pathMy, id, way = "no") => {
   const Key = pathMy == "article_pic" ? "+1999100599999" : "+1999111299999";
 
   const path = "./public/" + pathMy + "/";
@@ -25,11 +26,27 @@ exports.buffer = (req, res, avatar, pathMy, way = "no") => {
   if (way !== "add") {
     // 删除替换前的图片
     if (files.length > 0) {
-      files.map((v) => {
-        if (v.includes(req.user.id + Key)) {
-          fs.unlinkSync(path + v);
+      let sql = `select article_avatar from articles where id =?`;
+      db.query(sql, id, (err, result) => {
+        if (err) {
+          return res.staSend(1, err.message);
         }
-      });
+        let delPath = result[0].article_avatar;
+          files.map((v) => {
+            if (delPath.includes(v)) {
+              fs.unlinkSync(delPath);
+            }
+           else if (v.includes(req.user.id + "+" + id + "+" + Key)) {
+              fs.unlinkSync(path + v);
+            }
+          });
+      })
+
+      // files.map((v) => {
+      //   if (v.includes(req.user.id + "+" + id + "+" + Key)) {
+      //     fs.unlinkSync(path + v);
+      //   }
+      // });
     }
   }
 
@@ -38,7 +55,8 @@ exports.buffer = (req, res, avatar, pathMy, way = "no") => {
   let dataBuffer = new Buffer.from(base64url, "base64");
 
   // 存储文件命名是使用当前时间，防止文件重名
-  let saveUrl = path + req.user.id + Key + Date.now() + avatar.name;
+  let saveUrl =
+    path + req.user.id + "+" + id + "+" + Key + Date.now() + avatar.name;
 
   fs.writeFile(saveUrl, dataBuffer, (err) => {
     if (err) {

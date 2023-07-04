@@ -37,11 +37,12 @@ exports.updateArticle = (req, res) => {
   let { name, author, article_avatar, detail, id, tag_id, cate_id } = req.body;
 
   let obj = { name, author, detail, tag_id, cate_id };
+
   if (!article_avatar.includes("./public")) {
     article_avatar = JSON.parse(article_avatar);
 
     // base64转服务器图片路径，存储到数据库
-    article_avatar = buffer(req, res, article_avatar, "article_pic");
+    article_avatar = buffer(req, res, article_avatar, "article_pic",id);
     obj["article_avatar"] = article_avatar;
   }
   //剔除null的键值对
