@@ -7,12 +7,18 @@ const fs = require("fs");
 // 添加文章
 exports.addArticle = (req, res) => {
   let { name, author, article_avatar, detail, tag_id, cate_id } = req.body;
-
   // base64转服务器图片路径，存储到数据库
   // article_avatar = updatePic(req, res, 0);
   article_avatar = JSON.parse(article_avatar);
   if (article_avatar) {
-    article_avatar = buffer(req, res, article_avatar, "article_pic", "add");
+    article_avatar = buffer(
+      req,
+      res,
+      article_avatar,
+      "article_pic",
+      article_avatar.name,
+      "add"
+    );
   }
 
   let sql = `insert into articles set ?`;
@@ -37,14 +43,16 @@ exports.updateArticle = (req, res) => {
   let { name, author, article_avatar, detail, id, tag_id, cate_id } = req.body;
 
   let obj = { name, author, detail, tag_id, cate_id };
+  if (article_avatar) {
+    if (!article_avatar.includes("./public")) {
+      article_avatar = JSON.parse(article_avatar);
 
-  if (!article_avatar.includes("./public")) {
-    article_avatar = JSON.parse(article_avatar);
-
-    // base64转服务器图片路径，存储到数据库
-    article_avatar = buffer(req, res, article_avatar, "article_pic",id);
-    obj["article_avatar"] = article_avatar;
+      // base64转服务器图片路径，存储到数据库
+      article_avatar = buffer(req, res, article_avatar, "article_pic", id);
+      obj["article_avatar"] = article_avatar;
+    }
   }
+
   //剔除null的键值对
   let noNullObj = removeProNull(obj);
 
@@ -62,7 +70,9 @@ exports.delArticle = (req, res) => {
   let sql0 = `select article_avatar from articles where id=?`;
   db.query(sql0, req.body.id, (err, result0) => {
     errSend(res, err, result0, "删除图片失败");
-    fs.unlinkSync(result0[0].article_avatar);
+    if (result0[0].article_avatar) {
+      fs.unlinkSync(result0[0].article_avatar);
+    }
   });
   let sql1 = `delete from msgs where article_id=?`;
   db.query(sql1, req.body.id, (err, result1) => {
@@ -79,9 +89,10 @@ exports.delArticle = (req, res) => {
 
 // 根据”id字段“排序，倒叙输出tablename表中的数据。
 // 备注：asc是表示升序，desc表示降序
-// 获取所有文章
+
+// 获取所有文章  分页查询3篇
 exports.getArticle = (req, res) => {
-  let sql = `select * from articles order by id desc`;
+  let sql = `select * from articles order by id desc limit ${req.body.start}, 3`;
   db.query(sql, (err, result) => {
     errSend(res, err, [0], "获取文章失败");
     return res.staSend(0, "获取文章成功", result);
@@ -137,9 +148,11 @@ exports.inserTraffic = (req, res) => {
 exports.getAvatar = (req, res) => {
   let sql = `select article_avatar from articles where id= ?`;
   db.query(sql, req.body.id, (err, result) => {
-    errSend(res, err, [1], "获取文章大图失败");
+    if (err || !result[0].article_avatar) {
+      errSend(res, err, [1], "获取文章大图失败");
+    }
     const data = fs.readFile(
-      result[0].article_avatar,
+      result[0]?.article_avatar,
       "binary",
       function (err, data) {
         if (err) {

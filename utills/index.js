@@ -21,7 +21,6 @@ exports.buffer = (req, res, avatar, pathMy, id, way = "no") => {
 
   // 获取目标文件夹中的所有图片
   let files = fs.readdirSync(path);
-
   // 当不是新增文章时
   if (way !== "add") {
     // 删除替换前的图片
@@ -31,16 +30,16 @@ exports.buffer = (req, res, avatar, pathMy, id, way = "no") => {
         if (err) {
           return res.staSend(1, err.message);
         }
+
         let delPath = result[0].article_avatar;
-          files.map((v) => {
-            if (delPath.includes(v)) {
-              fs.unlinkSync(delPath);
-            }
-           else if (v.includes(req.user.id + "+" + id + "+" + Key)) {
-              fs.unlinkSync(path + v);
-            }
-          });
-      })
+        files.map((v) => {
+          if (delPath.includes(v)) {
+            fs.unlinkSync(delPath);
+          } else if (v.includes(req.user.id + "+" + id + "+" + Key)) {
+            fs.unlinkSync(path + v);
+          }
+        });
+      });
 
       // files.map((v) => {
       //   if (v.includes(req.user.id + "+" + id + "+" + Key)) {
